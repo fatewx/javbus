@@ -2,7 +2,7 @@
 
 import urllib2, re, time
 
-code_regex = re.compile(r"[a-zA-Z0-9]{2,5}-?\d{2,4}(?!/)")
+code_regex = re.compile(r"[a-zA-Z0-9]{2,5}-?\d{2,5}(?!/)")
 
 
 javbus = "http://www.javbus.in/%s"
