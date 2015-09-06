@@ -1,4 +1,5 @@
 __author__ = 'mUSicX'
+import urllib2
 
 javbus = "http://www.javbus.in/%s"
 
@@ -19,3 +20,12 @@ class VideoNameIterator:
         if len(self.names) <= self.index:
             raise StopIteration
         return self.names[self.index]
+
+if __name__ == '__main__':
+    test = ['snis-134']
+
+    for name in test:
+        page = urllib2.urlopen((javbus % name))
+        content = page.read()
+        print content
+
