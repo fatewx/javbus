@@ -1,3 +1,5 @@
+#!/usr/local/bin/python
+#coding:utf-8
 __author__ = 'mUSicX'
 
 import urllib2, re, time
