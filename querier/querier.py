@@ -2,9 +2,9 @@
 #coding:utf-8
 __author__ = 'mUSicX'
 
-import urllib2, re, time
+import urllib2, re, time, sys
 
-code_regex = re.compile(r"[a-zA-Z0-9]{2,5}-?\d{2,5}(?!/)")
+code_regex = re.compile(r"[a-zA-Z][a-zA-Z0-9]{1,4}-?\d{2,5}(?!/)")
 
 javbus = "http://www.javbus.in/%s"
 title_regex = re.compile(r'<div class="movie".+?img src="(.+?)".+?title="(.+?)"></a>.+?"movie-code">(.+?)</span>', re.DOTALL)
@@ -31,14 +31,13 @@ class VideoNameIterator:
 
 
 if __name__ == "__main__":
-    file = "abc.txt"
-    file_content = open(file).read()
-    out = open('output.txt', 'w')
+    print sys.argv
+    file_content = open(sys.argv[1]).read()
+    out = open(sys.argv[2], 'w')
     for code_match in code_regex.finditer(file_content) :
         code = code_match.group()
         if "-" not in code:
             code = re.sub(r"(\d+)", r"-\1", code)
-        print "doing %s" % code
         header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36', 'Cookie':'__cfduid=d106d1ad74a87b7b99e9160f80ec2d7bd1441441724', 'Accept-Language':'en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4,zh-TW;q=0.2'}
         req = urllib2.Request(javbus % code, headers = header)
         try:
@@ -56,8 +55,9 @@ if __name__ == "__main__":
                 for name_match in name_regex.finditer(actress_part):
                     actress.append(name_match.group(1))
             out.write("{}|{}|{}|{}\n".format(code, ",".join(actress),title,image))
-            time.sleep(2)
+            print "doing %s successful" % code
+            time.sleep(1)
             out.flush()
         except:
-            pass
+            print "doing %s failed" % code
     out.close()
